@@ -50,6 +50,5 @@ jobs:
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'hrms-api-backend'
-          slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3CF184A64E11401A9CCBA32C23FECE7F }}
