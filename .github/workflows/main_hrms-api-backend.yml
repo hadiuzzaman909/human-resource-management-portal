@@ -9,7 +9,6 @@ on:
       - main
   workflow_dispatch:
 
-# Automatically cancels previous queued/running builds if a new push comes in
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -17,8 +16,6 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read # This is required for actions/checkout
 
     steps:
       - uses: actions/checkout@v4
@@ -32,13 +29,13 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: dotnet publish
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/myapp
+        run: dotnet publish -c Release -o ./publish
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
           name: .net-app
-          path: ${{env.DOTNET_ROOT}}/myapp
+          path: ./publish
 
   deploy:
     runs-on: ubuntu-latest
