@@ -19,8 +19,6 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         b => b.MigrationsAssembly("HRMS.Infrastructure")
     ));
 
-
-
 // Register AutoMapper
 builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 
@@ -30,16 +28,13 @@ builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
 var app = builder.Build();
 
-// Configure HTTP Request Pipeline
-if (app.Environment.IsDevelopment())
+// Enable Swagger in ALL environments (including Azure Production)
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRMS API v1");
-        c.RoutePrefix = string.Empty;
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRMS API v1");
+    c.RoutePrefix = "swagger"; // Enables Swagger UI at https://your-app.azurewebsites.net/swagger
+});
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
