@@ -32,8 +32,8 @@ var app = builder.Build();
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "HRMS API v1");
-    c.RoutePrefix = "swagger"; // Enables Swagger UI at https://your-app.azurewebsites.net/swagger
+    c.SwaggerEndpoint("v1/swagger.json", "HRMS API v1");
+    c.RoutePrefix = "swagger";
 });
 
 app.UseHttpsRedirection();
