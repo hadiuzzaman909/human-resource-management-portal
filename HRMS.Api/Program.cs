@@ -26,6 +26,21 @@ builder.Services.AddAutoMapper(cfg => { }, typeof(MappingProfile));
 builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 
+
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins(
+            "http://localhost:3000",
+            "https://calm-desert-025bc2700.7.azurestaticapps.net"
+        )
+        .AllowAnyHeader()
+        .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Enable Swagger in ALL environments (including Azure Production)
@@ -36,6 +51,7 @@ app.UseSwaggerUI(c =>
     c.RoutePrefix = "swagger";
 });
 
+app.UseCors("AllowFrontend");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
